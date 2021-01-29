@@ -16,3 +16,9 @@ class Diccionario:
         alphaEncode = (self.alphaSpanish[inicio:]+self.alphaSpanish[:inicio])
         print(alphaEncode)
         return alphaEncode
+    
+    def getPositionSpanish(self, char):
+        return self.alphaSpanish.index(char)
+    
+    def getCharSpanish(self, indice):
+        return self.alphaSpanish[indice]
