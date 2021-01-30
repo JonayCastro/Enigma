@@ -9,16 +9,16 @@ class Diccionario:
             if i == 14:
                 self.alphaSpanish.append("Ñ")
             self.alphaSpanish.append(ALPHA[i])
-        print(self.alphaSpanish)
         return self.alphaSpanish
 
     def createAlphaEncoder(self, inicio):
         alphaEncode = (self.alphaSpanish[inicio:]+self.alphaSpanish[:inicio])
-        print(alphaEncode)
         return alphaEncode
     
     def getPositionSpanish(self, char):
         return self.alphaSpanish.index(char)
     
     def getCharSpanish(self, indice):
+        if indice > 26:
+            indice -= 27
         return self.alphaSpanish[indice]

@@ -1,4 +1,4 @@
-import rotor,filtro,sys,diccionarios,reflector
+import rotor,sys,re,diccionarios,reflector
 
 class Init():
     def __init__(self, msg, initRotor1, initRotor2, initRotor3, initReflector, func):
@@ -11,11 +11,11 @@ class Init():
         self.reflector = None
         self.msg = msg
         self.func = func
+        self.salida = ""
 
         self.dic = diccionarios.Diccionario()
         self.dic.createSpanishAlpha()
         
-
         self.procesaInit()
     def procesaInit(self):
         
@@ -24,44 +24,60 @@ class Init():
         self.initRotors.append(self.dic.getPositionSpanish(self.initRotor3))
         self.initRotors.append(self.dic.getPositionSpanish(self.initReflector))
     
+    def passCtrl(self):
+        totalPass = 0
+        for i in range(len(self.rotors)):
+            totalPass+=self.rotors[i].getSetPaso()
+        selec = None
+        if totalPass <= 26:
+            selec = 0
+        elif totalPass <=53:
+            selec = 1
+        elif totalPass <= 80:
+            selec = 2
+        elif totalPass > 80:
+            selec = 3
+            for i in self.rotors:
+                i.getSetPaso(0)
+            
+        if self.func == 1:
+            if selec != 3:
+                if self.rotors[selec].getSetPaso() >= 26:
+                    self.rotors[selec].getSetPaso(0)
+                else:
+                    self.rotors[selec].aumentaPaso()
+        elif self.func == 2:
+            if selec != 3:
+                if self.rotors[selec].getSetPaso() <= 0:
+                    self.rotors[selec].getSetPaso(26)
+                else:
+                    self.rotors[selec].reducePaso()
+        
     def run(self):
         self.msg = self.msg.upper()
-        f = filtro.Filtro(self.msg)
         
-        if(f.isCorrect()):
+        if(re.compile(r'[\W_]')):
             self.reflector = reflector.Reflector(self.dic, self.initRotors[3])
             for i in range(3):
-                self.rotors.append(rotor.Rotor(self.dic, i, 0, self.initRotors[i]))
-            
-            #Codificar----------------------------------------------------------------
-            if self.func == 1:
-                for i in self.msg:
-                    #print(self.rotors[0].encoder(self.dic.getPositionSpanish(i)))
-                    #self.rotors[0].aumentaPaso()
-                    if i != " ":
-                        onePass = self.rotors[0].encoder(self.dic.getPositionSpanish(i))
-                        secondPass = self.rotors[1].encoder(self.rotors[0].getPositionEnc(onePass))
-                        thidPass = self.rotors[2].encoder(self.rotors[0].getPositionEnc(secondPass))
-                        print(self.reflector.encoder(self.rotors[0].getPositionEnc(thidPass)))
-                        
-                        for r in range(len(self.rotors)):
-                            paso = self.rotors[r].getSetPaso()
-                            if paso <= 26:
-                                self.rotors[r].aumentaPaso()
-                            elif paso == 26:
-                                self.rotors[r].getSetPaso(0)
-                                if r+1 != 3:
-                                    self.rotors[r+1].aumentaPaso()
-                                
-            #-------------------------------------------------------------------------
-            
-            #Decodificar--------------------------------------------------------------
-            elif self.func == 2:
-                for i in self.msg:
-                    print(self.rotors[0].decoder(i))
-                    self.rotors[0].reducePaso()
-            #-------------------------------------------------------------------------
-        
+                self.rotors.append(rotor.Rotor(i, 0, self.initRotors[i]))
+
+            for c in self.msg:
+                if c != " ":
+                    if self.func == 1:
+                        onePass = self.dic.getPositionSpanish(c)
+                        for r in self.rotors:
+                            onePass+=r.getSetPaso()
+                        self.salida+=self.reflector.getCharEncode(onePass)
+                    if self.func == 2:
+                        onePass = self.reflector.getIndexChar(c)
+                        for r in self.rotors:
+                            onePass+=r.getSetPaso()
+                        self.salida+=self.dic.getCharSpanish(onePass)
+                    self.passCtrl()
+            print(self.salida)
+        else:
+            print("Solo se permiten letras entra de la 'A' a la 'Z'")
+
 if __name__ == "__main__":
     '''
         parametros de Init(msg, rotor1, rotor2, rotor3, reflector, func):
@@ -74,5 +90,5 @@ if __name__ == "__main__":
                 Valor 1 = Codificar msg
                 Valor 2 = Decodificremos msg
     '''
-    Init("aa","G","H","C","N", 1).run()
 
+    Init("No preguntes por saber lo que el tiempo te dira que bonito es aprender sin tener que preguntar","G","H","C","N", 1).run()
