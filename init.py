@@ -1,7 +1,7 @@
 import rotor,sys,re,diccionarios,reflector
 
 class Init():
-    def __init__(self, msg, initRotor1, initRotor2, initRotor3, initReflector, func):
+    def __init__(self, msg, initRotor1, initRotor2, initRotor3, initReflector):
         self.rotors = []
         self.initRotors = []
         self.initRotor1 = initRotor1
@@ -10,7 +10,7 @@ class Init():
         self.initReflector = initReflector
         self.reflector = None
         self.msg = msg
-        self.func = func
+        self.func = 2
         self.salida = ""
 
         self.dic = diccionarios.Diccionario()
@@ -19,10 +19,10 @@ class Init():
         self.procesaInit()
     def procesaInit(self):
         
-        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor1))
-        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor2))
-        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor3))
-        self.initRotors.append(self.dic.getPositionSpanish(self.initReflector))
+        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor1.upper()))
+        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor2.upper()))
+        self.initRotors.append(self.dic.getPositionSpanish(self.initRotor3.upper()))
+        self.initRotors.append(self.dic.getPositionSpanish(self.initReflector.upper()))
     
     def passCtrl(self):
         totalPass = 0
@@ -59,21 +59,16 @@ class Init():
         if(re.compile(r'[\W_]')):
             self.reflector = reflector.Reflector(self.dic, self.initRotors[3])
             for i in range(3):
-                self.rotors.append(rotor.Rotor(i, 0, self.initRotors[i]))
-
+                self.rotors.append(rotor.Rotor(i, self.initRotors[i], self.initRotors[i]))
             for c in self.msg:
                 if c != " ":
-                    if self.func == 1:
-                        onePass = self.dic.getPositionSpanish(c)
-                        for r in self.rotors:
-                            onePass+=r.getSetPaso()
-                        self.salida+=self.reflector.getCharEncode(onePass)
+                    self.passCtrl()
                     if self.func == 2:
                         onePass = self.reflector.getIndexChar(c)
                         for r in self.rotors:
-                            onePass+=r.getSetPaso()
+                            onePass-=r.getSetPaso()
                         self.salida+=self.dic.getCharSpanish(onePass)
-                    self.passCtrl()
+                    
             print(self.salida)
         else:
             print("Solo se permiten letras entra de la 'A' a la 'Z'")
@@ -91,4 +86,4 @@ if __name__ == "__main__":
                 Valor 2 = Decodificremos msg
     '''
 
-    Init("No preguntes por saber lo que el tiempo te dira que bonito es aprender sin tener que preguntar","G","H","C","N", 1).run()
+    Init("sknw","a","a","a","a").run()

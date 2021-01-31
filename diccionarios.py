@@ -20,5 +20,7 @@ class Diccionario:
     
     def getCharSpanish(self, indice):
         if indice > 26:
-            indice -= 27
+            indice = indice % 26
+        elif indice < 0:
+            indice = ((indice*(-1)) % 26)
         return self.alphaSpanish[indice]
