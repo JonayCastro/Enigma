@@ -12,9 +12,6 @@ class Rotor:
         else:
             self.__paso = paso
     
-    def aumentaPaso(self):
-        self.__paso+=1
-    
     def reducePaso(self):
         self.__paso-=1
     

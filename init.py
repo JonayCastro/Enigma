@@ -40,18 +40,12 @@ class Init():
             for i in self.rotors:
                 i.getSetPaso(0)
             
-        if self.func == 1:
-            if selec != 3:
-                if self.rotors[selec].getSetPaso() >= 26:
-                    self.rotors[selec].getSetPaso(0)
-                else:
-                    self.rotors[selec].aumentaPaso()
-        elif self.func == 2:
-            if selec != 3:
-                if self.rotors[selec].getSetPaso() <= 0:
-                    self.rotors[selec].getSetPaso(26)
-                else:
-                    self.rotors[selec].reducePaso()
+        if selec != 3:
+            if self.rotors[selec].getSetPaso() <= 0:
+                self.rotors[selec].getSetPaso(26)
+            elif self.rotors[selec].getSetPaso() >= 26:
+                self.rotors[selec].getSetPaso(0)
+            self.rotors[selec].reducePaso()
         
     def run(self):
         self.msg = self.msg.upper()
@@ -62,13 +56,11 @@ class Init():
                 self.rotors.append(rotor.Rotor(i, self.initRotors[i], self.initRotors[i]))
             for c in self.msg:
                 if c != " ":
-                    self.passCtrl()
-                    if self.func == 2:
-                        onePass = self.reflector.getIndexChar(c)
-                        for r in self.rotors:
-                            onePass-=r.getSetPaso()
-                        self.salida+=self.dic.getCharSpanish(onePass)
-                    
+                    onePass = self.reflector.getIndexChar(c)
+                    for r in self.rotors:
+                        onePass-=r.getSetPaso()
+                    self.salida+=self.dic.getCharSpanish(onePass)
+                self.passCtrl()
             print(self.salida)
         else:
             print("Solo se permiten letras entra de la 'A' a la 'Z'")
@@ -86,4 +78,4 @@ if __name__ == "__main__":
                 Valor 2 = Decodificremos msg
     '''
 
-    Init("sknw","a","a","a","a").run()
+    Init("BECUBFMWAQT","a","b","c","d").run()
