@@ -1,22 +1,24 @@
 import rotor,sys,re,diccionarios,reflector
 
 class Init():
-    def __init__(self, msg, initRotor1, initRotor2, initRotor3, initReflector):
+    def __init__(self, msg, initRotor1, initRotor2, initRotor3, initRef):
         self.rotors = []
         self.initRotors = []
         self.initRotor1 = initRotor1
         self.initRotor2 = initRotor2
         self.initRotor3 = initRotor3
-        self.initReflector = initReflector
+        self.initReflector = initRef
         self.reflector = None
         self.msg = msg
         self.func = 2
         self.salida = ""
+        self.totalPass = 0
 
         self.dic = diccionarios.Diccionario()
         self.dic.createSpanishAlpha()
         
         self.procesaInit()
+        
     def procesaInit(self):
         
         self.initRotors.append(self.dic.getPositionSpanish(self.initRotor1.upper()))
@@ -24,43 +26,31 @@ class Init():
         self.initRotors.append(self.dic.getPositionSpanish(self.initRotor3.upper()))
         self.initRotors.append(self.dic.getPositionSpanish(self.initReflector.upper()))
     
-    def passCtrl(self):
-        totalPass = 0
+    def avanceCtrl(self):
+        selec = 0
         for i in range(len(self.rotors)):
-            totalPass+=self.rotors[i].getSetPaso()
-        selec = None
-        if totalPass <= 26:
-            selec = 0
-        elif totalPass <=53:
-            selec = 1
-        elif totalPass <= 80:
-            selec = 2
-        elif totalPass > 80:
-            selec = 3
-            for i in self.rotors:
-                i.getSetPaso(0)
+            if self.rotors[i].isInPaso():
+                selec = i
+
+        self.rotors[selec].avanza()
             
-        if selec != 3:
-            if self.rotors[selec].getSetPaso() <= 0:
-                self.rotors[selec].getSetPaso(26)
-            elif self.rotors[selec].getSetPaso() >= 26:
-                self.rotors[selec].getSetPaso(0)
-            self.rotors[selec].reducePaso()
-        
     def run(self):
         self.msg = self.msg.upper()
         
         if(re.compile(r'[\W_]')):
             self.reflector = reflector.Reflector(self.dic, self.initRotors[3])
-            for i in range(3):
-                self.rotors.append(rotor.Rotor(i, self.initRotors[i], self.initRotors[i]))
+            for i in range(1):
+                paso = self.dic.getPositionSpanish("B")
+                indexIn = self.dic.getPositionSpanish("B")
+                indexOut = self.dic.getPositionSpanish("C")
+                self.rotors.append(rotor.Rotor(self.dic, i, paso, indexIn, indexOut))
+                
+            
             for c in self.msg:
                 if c != " ":
-                    onePass = self.reflector.getIndexChar(c)
-                    for r in self.rotors:
-                        onePass-=r.getSetPaso()
-                    self.salida+=self.dic.getCharSpanish(onePass)
-                self.passCtrl()
+                    self.reflector.codifica(self.rotors[0].codifica(c))
+                    self.salida+=self.reflector.codifica(self.rotors[0].codifica(c))
+                    self.rotors[i].avanza()
             print(self.salida)
         else:
             print("Solo se permiten letras entra de la 'A' a la 'Z'")
@@ -78,4 +68,4 @@ if __name__ == "__main__":
                 Valor 2 = Decodificremos msg
     '''
 
-    Init("BECUBFMWAQT","a","b","c","d").run()
+    Init("ap","a","a","a","b").run()
