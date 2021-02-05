@@ -6,6 +6,11 @@ class Init():
         self.reflector = None
         self.msg = msg
         self.salida = ""
+        """
+            La variable initDatsRotors es una lista de dos dimensiones que contiene las posiciones de inicio y la posición
+            de salto de cada rotor en el siguiente orden:
+                [posición de salto, posición parrila entrada, posición parilla salida]
+        """
         self.initDatsRotors = [["E","W","G"],["L","f","L"],["S","A","Q"]]
         self.initDatsReflector = "i"
         self.dic = diccionarios.Diccionario()
