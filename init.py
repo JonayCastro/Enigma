@@ -57,7 +57,11 @@ class Init():
                     #-------------------------------------------------------
 
                     five = self.dic.getCharSpanish(four)
-                    self.salida+=five
+                    p = ""
+                    p += five
+                    self.salida+=p
+                    if len(self.salida) == 4:
+                        self.salida+=" "
                     self.avanceCtrl()
             print(self.salida)
         else:
@@ -65,4 +69,4 @@ class Init():
 
 if __name__ == "__main__":
 
-    Init("IYAJ").run()
+    Init("EJGX DHNXYÑQ").run()
