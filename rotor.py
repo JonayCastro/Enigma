@@ -1,25 +1,33 @@
 import diccionarios
 
 class Rotor:
-    def __init__(self, objDic, id, paso, indexIn, indexOut):
+    def __init__(self, objDic, id, initDat):
         self.__id = id
         self.dic = objDic
-        self.__paso = paso
-        self.__indexIn = indexIn
-        self.__indexOut = indexOut
+        self.__paso = initDat[0].upper()
+        self.__indexIn = initDat[1].upper()
+        self.__indexOut = initDat[2].upper()
 
+        self.__alphaEncodeIn = []
+        self.__alphaEncodeOut = []
 
-        self.__alpahEncodeIn = self.dic.createAlphaEncoder(self.__indexIn)
-        self.__alpahEncodeOut = self.dic.createAlphaEncoder(self.__indexOut)
+    def init(self):
+        self.__alphaEncodeIn = self.dic.createAlphaEncoder(self.__indexIn)
+        self.__alphaEncodeOut = self.dic.createAlphaEncoder(self.__indexOut)
 
-        print(self.__alpahEncodeIn)
-        print(self.__alpahEncodeOut)
-    
-    def codifica(self, char):
-        return self.__alpahEncodeOut[self.__alpahEncodeIn.index(char)]
-    
+    def codificaIda(self, item):
+        return self.__alphaEncodeOut.index(self.__alphaEncodeIn[item])
+
+    def codificaVuelta(self,item):
+        return self.__alphaEncodeIn.index(self.__alphaEncodeOut[item])
+
     def avanza(self):
-        self.__alpahEncodeOut = self.dic.createAlphaEncoder(self.__alpahEncodeOut[1])
+        self.__alphaEncodeIn = self.dic.createAlphaEncoder(self.__alphaEncodeIn[1])
+
+    def isInPaso(self):
+        if self.__alphaEncodeIn[0] == self.__paso:
+            return True
+        return False
     
     def getId(self):
         return self.__id

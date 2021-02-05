@@ -12,16 +12,13 @@ class Diccionario:
         return self.alphaSpanish
 
     def createAlphaEncoder(self, inicio):
-        try:
-            alphaEncode = (self.alphaSpanish[inicio:]+self.alphaSpanish[:inicio])
-        except:
-            alphaEncode = (self.alphaSpanish[self.alphaSpanish.index(inicio):]+self.alphaSpanish[:self.alphaSpanish.index(inicio)])
-        return alphaEncode
-    
+        return self.alphaSpanish[self.alphaSpanish.index(inicio):]+self.alphaSpanish[:self.alphaSpanish.index(inicio)]
+
     def getPositionSpanish(self, char):
         return self.alphaSpanish.index(char)
+
+    def createAlphaReversed(self, item):
+        return list(reversed(item))
     
     def getCharSpanish(self, indice):
-        if indice > len(self.alphaSpanish):
-            indice = indice % len(self.alphaSpanish)
         return self.alphaSpanish[indice]

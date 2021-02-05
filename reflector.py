@@ -1,16 +1,17 @@
 import diccionarios
 
 class Reflector():
-    def __init__(self, objDic, inicio):
-        self.inicio = inicio
+    def __init__(self, objDic, initDat):
+        self.id = "reflector"
+        self.__initDat = initDat.upper()
         self.dic = objDic
-        self.paso = 14
-        
-        self.__alphaEncode = self.dic.createAlphaEncoder(self.inicio)
+
+        self.__alphaEncodeIn = []
+        self.__alphaEncodeOut = []
     
-    def codifica(self, char):
-        c = self.__alphaEncode.index(char)+self.paso
-        if c > 26:
-            c = (c-(c%26))
-        return self.__alphaEncode[c]
+    def init(self):
+        self.__alphaEncodeIn = self.dic.createAlphaEncoder(self.__initDat)
+        self.__alphaEncodeOut = self.dic.createAlphaReversed(self.__alphaEncodeIn)
         
+    def codifica(self, item):
+        return self.__alphaEncodeOut.index(self.__alphaEncodeIn[item])
