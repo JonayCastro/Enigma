@@ -23,6 +23,7 @@ class Rotor:
 
     def avanza(self):
         self.__alphaEncodeIn = self.dic.createAlphaEncoder(self.__alphaEncodeIn[1])
+        self.__alphaEncodeOut = self.dic.createAlphaEncoder(self.__alphaEncodeOut[1])
 
     def isInPaso(self):
         if self.__alphaEncodeIn[0] == self.__paso:

@@ -11,8 +11,8 @@ class Init():
             de salto de cada rotor en el siguiente orden:
                 [posición de salto, posición parrila entrada, posición parilla salida]
         """
-        self.initDatsRotors = [["E","W","G"],["L","f","L"],["S","A","Q"]]
-        self.initDatsReflector = "i"
+        self.initDatsRotors = [["E","W","G"],["L","f","L"],["S","o","Q"]]
+        self.initDatsReflector = "l"
         self.dic = diccionarios.Diccionario()
         self.dic.createSpanishAlpha()
         
@@ -34,10 +34,11 @@ class Init():
                 r = rotor.Rotor(self.dic, i, self.initDatsRotors[i])
                 r.init()
                 self.rotors.append(r)
-                
+            lon = 0
             for c in self.msg:
+                
                 if c != " ":
-                    
+                    lon+=1
                     one = self.dic.getPositionSpanish(c)
                     
                     #codifica ida rotor-------------------------------------
@@ -57,16 +58,17 @@ class Init():
                     #-------------------------------------------------------
 
                     five = self.dic.getCharSpanish(four)
-                    p = ""
-                    p += five
-                    self.salida+=p
-                    if len(self.salida) == 4:
+                    
+                    self.salida+=five
+                    if lon == 4:
                         self.salida+=" "
+                        lon = 0
                     self.avanceCtrl()
+                    
             print(self.salida)
         else:
             print("Solo se permiten letras entra de la 'A' a la 'Z'")
 
 if __name__ == "__main__":
 
-    Init("EJGX DHNXYÑQ").run()
+    Init("LUQD NLEW TL").run()
