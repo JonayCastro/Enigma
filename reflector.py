@@ -2,7 +2,6 @@ import diccionarios
 
 class Reflector():
     def __init__(self, objDic, initDat):
-        self.id = "reflector"
         self.__initDat = initDat.upper()
         self.dic = objDic
 

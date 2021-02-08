@@ -9,6 +9,7 @@ class Diccionario:
             if i == 14:
                 self.alphaSpanish.append("Ñ")
             self.alphaSpanish.append(ALPHA[i])
+        self.alphaSpanish.append(" ")
         return self.alphaSpanish
 
     def createAlphaEncoder(self, inicio):
