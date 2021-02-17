@@ -59,10 +59,12 @@ class Init():
                 self.salida+=five
                 self.avanceCtrl()
                     
-            print(self.salida)
+            #print(self.salida)
+            return self.salida
         else:
-            print("Solo se permiten letras entre la 'A' a la 'Z'")
+            #print("Solo se permiten letras entre la 'A' a la 'Z'")
+            return "Solo se permiten letras entre la 'A' a la 'Z'"
 
 if __name__ == "__main__":
 
-    Init("CVZJKHVYVKFRQJR").run()
+    print(Init("I_AJIDVWR_YIFWCX").run())
