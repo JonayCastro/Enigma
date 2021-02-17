@@ -3,8 +3,9 @@ from string import ascii_uppercase as ALPHA
 class Diccionario:
     def __init__(self):
         self.alphaSpanish = []
-        self.specialCharts = ["?","¿",".",",","-","_"," "]
-
+        self.specialCharts = list("#$%'()*+,-.:;<=>?@^_ ")
+        self.digits = list("0123456789")
+        
     def createSpanishAlpha(self):
         for i in range(0,len(ALPHA)):
             if i == 14:
@@ -13,6 +14,8 @@ class Diccionario:
         #self.alphaSpanish.append(" ")
         for j in self.specialCharts:
             self.alphaSpanish.append(j)
+        for x in self.digits:
+            self.alphaSpanish.append(x)
         return self.alphaSpanish
 
     def createAlphaEncoder(self, inicio):

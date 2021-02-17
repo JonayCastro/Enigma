@@ -67,4 +67,4 @@ class Init():
 
 if __name__ == "__main__":
 
-    print(Init("I_AJIDVWR_YIFWCX").run())
+    print(Init(")VX*>#MNI)O85N2X$?9M5>3'^+YY=T0+Y#P").run())
